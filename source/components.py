@@ -38,24 +38,6 @@ class NavigationDrawer(ft.NavigationDrawer):
         )
         self.open = False
 
-class View(ft.View):
-    def __init__(self, page, **kwargs):
-        super().__init__(**kwargs)
-        self.page = page
-        self.drawer = self.page.drawer
-        self.controls = [ft.Container(
-            image_src='img/background.png',
-            image_fit=ft.ImageFit.COVER,
-            expand=True,
-            content=self.generate_main_content()
-        )]
-
-    def generate_main_content(self):
-        return ft.Text('Generate main content')
-
-    def on_pre_view(self, page=None):
-        pass
-
 class CustomButton(ft.Container):
     def __init__(self, text, on_click, **kwargs):
         super().__init__(**kwargs)
@@ -73,7 +55,7 @@ class CustomButton(ft.Container):
         self.border_radius = 50
         self.bgcolor = ft.colors.GREY_800
 
-class RegisterTextField(ft.TextField):
+class CustomTextField(ft.TextField):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         bgcolor = '#dddddd'
@@ -94,13 +76,7 @@ class RegisterTextField(ft.TextField):
         self.expand = True
         self.expand_loose = True
 
-class ClientTextField(RegisterTextField):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.text_size = 15
-        self.disabled = True
-
-class LoginTextField(RegisterTextField):
+class LoginTextField(CustomTextField):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.width = 450

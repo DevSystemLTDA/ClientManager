@@ -2,8 +2,9 @@ import datetime
 
 import flet as ft
 
-from .components import CustomButton, LoginTextField, Title, TopTitle, View
+from .components import CustomButton, LoginTextField, Title, TopTitle
 from .control import Control
+from .view import View
 
 class LoginPage(View):
     def generate_main_content(self):

@@ -2,19 +2,16 @@ import datetime
 
 import flet as ft
 
-from .components import TopTitle, Title, View, ClientTextField, DateField
+from .components import TopTitle, Title, ClientTextField, DateField
 from .models import Cliente
+from .view import View
 
 class ClientsPage(View):
-    clients_container = None
-    def on_pre_view(self, page=None):
-        if self.clients_container:
-            self.clients_container.content = [ClientCard(self.page, c.get_data()) for c in Cliente.select()]
-            self.clients_container.update()
-        return super().on_pre_view(page)
+    def on_pre_view(self):
+        self.grid_view.controls = [ClientCard(self.page, c.get_data()) for c in Cliente.select()]
+        return super().on_pre_view()
 
     def generate_main_content(self):
-        self.on_pre_view()
         return ft.Column(
             horizontal_alignment=ft.alignment.center,
             controls=[
@@ -25,7 +22,7 @@ class ClientsPage(View):
                             icon_color=ft.colors.GREY_100,
                             icon_size=30,
                             padding=0,
-                            on_click=lambda e: e.page.show_drawer(self.drawer),
+                            on_click=lambda _: self.page.show_drawer(self.drawer),
                             left=0,
                             bottom=0,
                         ),
@@ -49,7 +46,13 @@ class ClientsPage(View):
         ])
 
     def generate_clients(self):
-        self.clients_container = ft.Container(
+        self.grid_view = ft.GridView(
+            controls=[ClientCard(self.page, c.get_data()) for c in Cliente.select()],
+            child_aspect_ratio=.75,
+            runs_count=4,
+            expand=1
+        )
+        return ft.Container(
             border=ft.border.only(top=ft.BorderSide(
                 3, ft.colors.GREY)
             ),
@@ -65,18 +68,12 @@ class ClientsPage(View):
                         height=1200,
                         expand=True,
                         expand_loose=True,
-                        content=ft.GridView(
-                                controls=[ClientCard(self.page, c.get_data()) for c in Cliente.select()],
-                                child_aspect_ratio=.75,
-                                runs_count=4,
-                                expand=1
-                            ),
+                        content=self.grid_view,
                         )
                 ],
                 alignment=ft.MainAxisAlignment.CENTER
             )
         )
-        return self.clients_container
 
 class ClientCard(ft.Container):
     fields = {
@@ -100,8 +97,8 @@ class ClientCard(ft.Container):
         self.height = 30
         self.content = self.generate_content()
         def on_click(e):
-            e.page.data = data
-            e.page.go('/update')
+            self.page.data = data
+            self.page.go('/update')
         self.on_click = on_click
 
     def generate_content(self):

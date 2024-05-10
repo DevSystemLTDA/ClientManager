@@ -1,1 +1,1 @@
-from .view import main
+from .main import main

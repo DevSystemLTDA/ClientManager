@@ -1,15 +1,12 @@
-from .components import Title
-from .register_page import CustomButton, RegisterPage
 
-class UpdatePage(RegisterPage):
-    title = Title(
-        'ALTERAR CLIENTE',
-        width=300
-    )
-    button = CustomButton(
-        'SALVAR ALTERAÇÔES', 
-        lambda _: print('Opa')
-    )
+from .form_page import FormPage
+
+class UpdatePage(FormPage):
+    title_text = 'ALTERAR CLIENTE'
+    button_text = 'SALVAR ALTERAÇÔES'
+    def on_submit(self, e):
+        pass
+
     def on_pre_view(self, page):
         d = page.data
         self.name_field.value = d.get('nome')
