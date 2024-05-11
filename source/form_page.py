@@ -1,6 +1,6 @@
 import flet as ft
 
-from .components import CustomButton, DateField, RegisterTextField, TopTitle, Title
+from .components import CustomButton, DateField, CustomTextField, TopTitle, Title
 from .view import View
 
 class FormPage(View):
@@ -11,19 +11,19 @@ class FormPage(View):
             self.title_text,
             width=300
         )
-        self.name_field = RegisterTextField(label='Nome')
+        self.name_field = CustomTextField(label='Nome')
         self.date_field = DateField(self.page, width=200)
-        self.tel_field = RegisterTextField(
+        self.tel_field = CustomTextField(
             label='Telefone',
             input_filter=ft.NumbersOnlyInputFilter()
         )
-        self.email_field = RegisterTextField(label='Email')
-        self.address_field = RegisterTextField(label='Endereço')
-        self.cpf_field = RegisterTextField(
+        self.email_field = CustomTextField(label='Email')
+        self.address_field = CustomTextField(label='Endereço')
+        self.cpf_field = CustomTextField(
             label='CPF',
             input_filter=ft.NumbersOnlyInputFilter()
         )
-        self.rg_field = RegisterTextField(
+        self.rg_field = CustomTextField(
             label='RG',
             input_filter=ft.NumbersOnlyInputFilter()
         )

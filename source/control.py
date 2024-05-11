@@ -15,13 +15,13 @@ class Control:
             password.encode('utf-8'),
             Data.get_value('pw').encode('utf-8')
         )
-    
+
     @classmethod
     def validate_form(cls, data: dict):
         for i in data:
             data[i] = data[i].strip()
 
-        if '' in list(data.values()):
+        if '' in list(data.values()) or len(data) != 7:
             return 'Preencha todos os campos!'
 
         name = data['nome']
@@ -46,6 +46,6 @@ class Control:
         if not rg.isdigit():
             return 'Digite apenas os dígitos do RG!'
         if len(rg) != 11:
-            return 'rg inválido!'
+            return 'RG inválido!'
 
         return None

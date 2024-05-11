@@ -2,9 +2,14 @@ import datetime
 
 import flet as ft
 
-from .components import CustomButton, LoginTextField, Title, TopTitle
+from .components import CustomButton, CustomTextField, Title, TopTitle
 from .control import Control
 from .view import View
+
+class LoginTextField(CustomTextField):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.width = 450
 
 class LoginPage(View):
     def generate_main_content(self):

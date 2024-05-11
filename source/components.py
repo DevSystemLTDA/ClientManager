@@ -2,85 +2,6 @@ import datetime
 
 import flet as ft
 
-class NavigationDrawer(ft.NavigationDrawer):
-    routes = ['/clients', '/register']
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.controls=[
-            ft.Stack(
-                height=85,
-                controls=[
-                    ft.Image(
-                        src='img/smaller_logo.png',
-                        width=150,
-                        height=75,
-                        bottom=0,
-                    )
-                ]
-            ),
-            ft.Divider(
-                color=ft.colors.WHITE,
-                thickness=2
-            ),
-            ft.NavigationDrawerDestination(
-                label="CLIENTES CADASTRADOS"
-            ),
-            ft.NavigationDrawerDestination(
-                label="CADASTRAR CLIENTE"
-            ),
-        ]
-
-        self.on_change = self.on_change_func
-
-    def on_change_func(self, e):
-        e.page.go(
-            self.routes[self.selected_index]
-        )
-        self.open = False
-
-class CustomButton(ft.Container):
-    def __init__(self, text, on_click, **kwargs):
-        super().__init__(**kwargs)
-        self.content = ft.TextButton(
-            content=ft.Text(
-                text,
-                font_family='Garet',
-                color=ft.colors.WHITE
-            ),
-            on_click=on_click
-        )
-        self.width = 200
-        self.height = 45
-        self.border = ft.border.all(2, ft.colors.WHITE)
-        self.border_radius = 50
-        self.bgcolor = ft.colors.GREY_800
-
-class CustomTextField(ft.TextField):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        bgcolor = '#dddddd'
-        self.label_style = ft.TextStyle(
-            color = ft.colors.GREY_800
-        )
-        self.color = ft.colors.GREY_800
-        self.text_style = ft.TextStyle(
-            font_family = "Garet"
-        )
-        self.focused_border_color = bgcolor
-        self.border = ft.InputBorder.OUTLINE
-        self.border_color = bgcolor
-        self.border_radius = 90
-        self.filled = True
-        self.bgcolor = bgcolor
-        self.height = 45
-        self.expand = True
-        self.expand_loose = True
-
-class LoginTextField(CustomTextField):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.width = 450
-
 class Title(ft.Container):
     def __init__(self, text, **kwargs):
         super().__init__(**kwargs)
@@ -134,6 +55,81 @@ class Message(ft.SnackBar):
         self.content.value = text
         self.open = True
         self.page.update()
+
+class NavigationDrawer(ft.NavigationDrawer):
+    routes = ['/clients', '/register']
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.controls=[
+            ft.Stack(
+                height=85,
+                controls=[
+                    ft.Image(
+                        src='img/smaller_logo.png',
+                        width=150,
+                        height=75,
+                        bottom=0,
+                    )
+                ]
+            ),
+            ft.Divider(
+                color=ft.colors.WHITE,
+                thickness=2
+            ),
+            ft.NavigationDrawerDestination(
+                label="CLIENTES CADASTRADOS"
+            ),
+            ft.NavigationDrawerDestination(
+                label="CADASTRAR CLIENTE"
+            ),
+        ]
+
+        self.on_change = lambda e: e.page.close_drawer()
+        self.on_dismiss = lambda e: e.page.go(self.routes[self.selected_index]) and print('Changed')
+
+class CustomButton(ft.Container):
+    def __init__(self, text, on_click, **kwargs):
+        super().__init__(**kwargs)
+        self.content = ft.TextButton(
+            content=ft.Text(
+                text,
+                font_family='Garet',
+                color=ft.colors.WHITE
+            ),
+            on_click=on_click
+        )
+        self.width = 200
+        self.height = 45
+        self.border = ft.border.all(2, ft.colors.WHITE)
+        self.border_radius = 50
+        self.bgcolor = ft.colors.GREY_800
+
+class CustomTextField(ft.TextField):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        bgcolor = '#dddddd'
+        self.label_style = ft.TextStyle(
+            color = ft.colors.GREY_800
+        )
+        self.color = ft.colors.GREY_800
+        self.text_style = ft.TextStyle(
+            font_family = "Garet"
+        )
+        self.focused_border_color = bgcolor
+        self.border = ft.InputBorder.OUTLINE
+        self.border_color = bgcolor
+        self.border_radius = 90
+        self.filled = True
+        self.bgcolor = bgcolor
+        self.height = 45
+        self.expand = True
+        self.expand_loose = True
+
+class ClientTextField(CustomTextField):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.text_size = 15
+        self.disabled = True
 
 class DateField(ft.Container):
     def __init__(self, page, value='', disabled=False, **kwargs):

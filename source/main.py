@@ -3,14 +3,17 @@ import datetime
 import flet as ft
 
 from .clients_page import ClientsPage
-from .components import Message, View, NavigationDrawer
+from .components import Message, NavigationDrawer
 from .login_page import LoginPage
 from .register_page import RegisterPage
 from .update_page import UpdatePage
+from .view import View
 
 def main(page: ft.Page):
     page.title = "DevSystem"
     page.padding = 1
+    #page.window_full_screen = True
+    page.window_maximized = True
     page.fonts = {
         "Garet-Heavy": "fonts/Garet-Heavy.ttf",
         "Garet": "fonts/Garet-Book.ttf",
