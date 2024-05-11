@@ -6,6 +6,7 @@ from .form_page import FormPage
 class UpdatePage(FormPage):
     title_text = 'ALTERAR CLIENTE'
     main_button_text = 'SALVAR ALTERAÇÔES'
+    button_icon = ft.icons.ARROW_BACK
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.buttons.insert(0, CustomButton(
@@ -13,6 +14,7 @@ class UpdatePage(FormPage):
             on_click=lambda _: print('Hi'),
             bgcolor=ft.colors.RED
         ))
+        self.icon_button_command = lambda e: e.page.go('/clients')
 
     def on_submit(self, e):
         pass

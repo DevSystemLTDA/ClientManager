@@ -97,8 +97,8 @@ class ClientCard(ft.Container):
         self.height = 30
         self.content = self.generate_content()
         def on_click(e):
-            self.page.data = data
-            self.page.go('/update')
+            e.page.data = data
+            e.page.go('/update')
         self.on_click = on_click
 
     def generate_content(self):

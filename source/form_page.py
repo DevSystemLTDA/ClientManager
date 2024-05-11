@@ -6,6 +6,7 @@ from .view import View
 class FormPage(View):
     title_text = 'Title text'
     main_button_text = 'Button text'
+    button_icon = ft.icons.MENU
     def __init__(self, **kwargs):
         self.title = Title(
             self.title_text,
@@ -32,6 +33,7 @@ class FormPage(View):
             on_click=self.on_submit
         )
         self.buttons = [self.main_button]
+        self.icon_button_command = lambda e: e.page.show_drawer(self.drawer)
         super().__init__(**kwargs)
 
     def on_submit(self, e):
@@ -44,11 +46,11 @@ class FormPage(View):
                 ft.Stack(
                     controls=[
                         ft.IconButton(
-                            icon=ft.icons.MENU,
+                            icon=self.button_icon,
                             icon_color=ft.colors.GREY_100,
                             icon_size=30,
                             padding=0,
-                            on_click=lambda e: e.page.show_drawer(self.drawer),
+                            on_click=self.icon_button_command,
                             left=0,
                             bottom=0,
                         ),
