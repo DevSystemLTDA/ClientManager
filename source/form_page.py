@@ -5,7 +5,7 @@ from .view import View
 
 class FormPage(View):
     title_text = 'Title text'
-    button_text = 'Button text'
+    main_button_text = 'Button text'
     def __init__(self, **kwargs):
         self.title = Title(
             self.title_text,
@@ -27,10 +27,11 @@ class FormPage(View):
             label='RG',
             input_filter=ft.NumbersOnlyInputFilter()
         )
-        self.button = CustomButton(
-            self.button_text,
+        self.main_button = CustomButton(
+            self.main_button_text,
             on_click=self.on_submit
         )
+        self.buttons = [self.main_button]
         super().__init__(**kwargs)
 
     def on_submit(self, e):
@@ -47,7 +48,7 @@ class FormPage(View):
                             icon_color=ft.colors.GREY_100,
                             icon_size=30,
                             padding=0,
-                            on_click=lambda _: self.page.show_drawer(self.drawer),
+                            on_click=lambda e: e.page.show_drawer(self.drawer),
                             left=0,
                             bottom=0,
                         ),
@@ -114,7 +115,7 @@ class FormPage(View):
                             self.rg_field,
                         ]),
                         ft.Row(
-                            [self.button],
+                            self.buttons,
                             alignment=ft.MainAxisAlignment.CENTER
                         )
                     ],

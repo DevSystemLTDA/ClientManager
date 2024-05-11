@@ -76,16 +76,15 @@ class NavigationDrawer(ft.NavigationDrawer):
                 color=ft.colors.WHITE,
                 thickness=2
             ),
-            ft.NavigationDrawerDestination(
-                label="CLIENTES CADASTRADOS"
-            ),
-            ft.NavigationDrawerDestination(
-                label="CADASTRAR CLIENTE"
-            ),
+            ft.NavigationDrawerDestination(label="CLIENTES CADASTRADOS"),
+            ft.NavigationDrawerDestination(label="CADASTRAR CLIENTE"),
         ]
 
-        self.on_change = lambda e: e.page.close_drawer()
-        self.on_dismiss = lambda e: e.page.go(self.routes[self.selected_index]) and print('Changed')
+        self.on_change = self.change
+
+    def change(self, e):
+        e.page.close_drawer()
+        e.page.go(self.routes[self.selected_index])
 
 class CustomButton(ft.Container):
     def __init__(self, text, on_click, **kwargs):

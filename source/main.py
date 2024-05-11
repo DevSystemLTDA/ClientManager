@@ -12,8 +12,6 @@ from .view import View
 def main(page: ft.Page):
     page.title = "DevSystem"
     page.padding = 1
-    #page.window_full_screen = True
-    page.window_maximized = True
     page.fonts = {
         "Garet-Heavy": "fonts/Garet-Heavy.ttf",
         "Garet": "fonts/Garet-Book.ttf",
@@ -22,25 +20,25 @@ def main(page: ft.Page):
     page.drawer = NavigationDrawer()
     View.page = page
 
-    views = {
-        '/register': RegisterPage(route='/register'),
-        '/clients': ClientsPage(route='/clients'),
-        '/login': LoginPage(route='/login'),
-        '/update': UpdatePage(route='/update')
-    }
+    page.views.extend([
+        RegisterPage(route='/register'),
+        ClientsPage(route='/clients'),
+        LoginPage(route='/login'),
+        UpdatePage(route='/update'),
+    ])
 
     def on_route_change(e):
-        view = views[page.route]
-        page.views[-1] = view
-        view.page = page
-        view.on_pre_view()
+        page.views.sort(key=lambda view: view.route == page.route)
+        page.views[-1].page = page
+        page.views[-1].on_pre_view()
+        page.update()
 
-    starter_page = '/login'
+    initial_route = '/login'
 
     logged_date = page.client_storage.get('logged')
     if logged_date and logged_date == f"{datetime.datetime.today():%d/%m}":
-        starter_page = '/clients'
+        initial_route = '/clients'
 
     page.on_route_change = on_route_change
-    page.views.append(views[starter_page])
-    page.go(starter_page)
+    page.views.sort(key=lambda view: view.route == initial_route)
+    page.go(initial_route)

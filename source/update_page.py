@@ -1,14 +1,24 @@
+import flet as ft
 
+from .components import CustomButton
 from .form_page import FormPage
 
 class UpdatePage(FormPage):
     title_text = 'ALTERAR CLIENTE'
-    button_text = 'SALVAR ALTERAÇÔES'
+    main_button_text = 'SALVAR ALTERAÇÔES'
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.buttons.insert(0, CustomButton(
+            'EXCLUIR',
+            on_click=lambda _: print('Hi'),
+            bgcolor=ft.colors.RED
+        ))
+
     def on_submit(self, e):
         pass
 
-    def on_pre_view(self, page):
-        d = page.data
+    def on_pre_view(self):
+        d = self.page.data
         self.name_field.value = d.get('nome')
         self.date_field.value = d.get('data_nasc')
         self.tel_field.value = d.get('tel')

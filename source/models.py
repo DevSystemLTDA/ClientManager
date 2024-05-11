@@ -25,7 +25,7 @@ class Cliente(BaseModel):
     rg = CharField(max_length=12)
 
     def __str__(self) -> str:
-        return self.nome
+        return str(self.nome)
 
     def get_data(self) -> dict:
         return self.__dict__['__data__']

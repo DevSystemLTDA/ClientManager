@@ -4,7 +4,7 @@ from .models import Cliente
 
 class RegisterPage(FormPage):
     title_text = 'CADASTRO DO CLIENTE'
-    button_text = 'CADASTRAR'
+    main_button_text = 'CADASTRAR'
     def on_submit(self, e):
         date = self.date_field.value
         data = {
