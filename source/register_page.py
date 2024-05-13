@@ -6,22 +6,16 @@ class RegisterPage(FormPage):
     title_text = 'CADASTRO DO CLIENTE'
     main_button_text = 'CADASTRAR'
     def on_submit(self, e):
-        date = self.date_field.value
-        data = {
-            'nome': self.name_field.value,
-            'data_nasc': date if isinstance(date, str) else f'{date:%d/%m/%Y}',
-            'tel': self.tel_field.value,
-            'email': self.email_field.value,
-            'endereco': self.address_field.value,
-            'cpf': self.cpf_field.value,
-            'rg': self.rg_field.value,
-        }
+        data = self.get_data()
         error_message = Control.validate_form(data)
         if error_message is not None:
-            return e.page.snack_bar.message(error_message)
+            return e.page.snack_bar.message(error_message, 'error')
 
-        Cliente.create(**data)
-        e.page.snack_bar.message('Cliente criado com sucesso!')
+        data['id'] = Cliente.create(**data)
+
+        e.page.data = {'instruction': {'create': data}}
+
+        e.page.snack_bar.message('Cliente criado com sucesso!', 'success')
         return e.page.go('/clients')
 
     def on_pre_view(self):

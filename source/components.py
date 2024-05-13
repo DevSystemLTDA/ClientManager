@@ -38,6 +38,11 @@ class TopTitle(ft.Row):
         self.alignment = ft.MainAxisAlignment.CENTER
 
 class Message(ft.SnackBar):
+    colors = {
+        'default': ft.colors.GREY_800,
+        'success': ft.colors.GREEN,
+        'error': ft.colors.RED
+    }
     def __init__(self, page, **kwargs):
         super().__init__(
             content=ft.Text(
@@ -51,8 +56,9 @@ class Message(ft.SnackBar):
         )
         self.page = page
 
-    def message(self, text):
+    def message(self, text, color='default'):
         self.content.value = text
+        self.bgcolor = self.colors[color]
         self.open = True
         self.page.update()
 
@@ -78,6 +84,11 @@ class NavigationDrawer(ft.NavigationDrawer):
             ),
             ft.NavigationDrawerDestination(label="CLIENTES CADASTRADOS"),
             ft.NavigationDrawerDestination(label="CADASTRAR CLIENTE"),
+            ft.Divider(),
+            ft.TextButton(
+                '@dev.syst',
+                url='https://www.instagram.com/dev.syst/'
+            )
         ]
 
         self.on_change = self.change
@@ -99,9 +110,15 @@ class CustomButton(ft.Container):
         )
         self.width = 200
         self.height = 45
-        self.border = ft.border.all(2, ft.colors.WHITE)
+        self.border = kwargs.get(
+            'border',
+            ft.border.all(2, ft.colors.WHITE)
+        )
         self.border_radius = 50
-        self.bgcolor = ft.colors.GREY_800
+        self.bgcolor = kwargs.get(
+            'bgcolor',
+            ft.colors.GREY_800
+        )
 
 class CustomTextField(ft.TextField):
     def __init__(self, **kwargs):
@@ -136,8 +153,9 @@ class DateField(ft.Container):
 
         self._value = value
 
-        def on_change(_):
+        def on_change(e):
             self.value = self.date_picker.value
+            e.page.update()
 
         self.date_picker = ft.DatePicker(
             on_change=on_change,
@@ -160,7 +178,7 @@ class DateField(ft.Container):
         self.content = self.text
         self.height = 45
         if not disabled:
-            self.on_click = lambda _: self.date_picker.pick_date()
+            self.on_click = lambda e: self.date_picker.pick_date()
 
     @property
     def value(self):
@@ -170,7 +188,3 @@ class DateField(ft.Container):
     def value(self, value):
         self._value = value
         self.text.value = value if isinstance(value, str) else f'{value:%d/%m/%Y}'
-        try:
-            self.text.update()
-        except AssertionError:
-            return None

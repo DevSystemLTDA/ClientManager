@@ -8,7 +8,26 @@ from .view import View
 
 class ClientsPage(View):
     def on_pre_view(self):
-        self.grid_view.controls = [ClientCard(self.page, c.get_data()) for c in Cliente.select()]
+        if self.drawer.selected_index:
+            self.drawer.selected_index = 0
+
+        if isinstance(self.page.data, dict):
+            instruction = self.page.data.get('instruction')
+            if instruction:
+                card_ids = [card.id for card in self.grid_view.controls]
+                if 'create' in instruction:
+                    self.grid_view.controls.append(
+                        ClientCard(self.page, instruction['create'])
+                    )
+                elif 'update' in instruction:
+                    data = instruction['update']
+                    card_index = card_ids.index(data['id'])
+                    self.grid_view.controls[card_index] = ClientCard(self.page, data)
+                elif 'delete' in instruction:
+                    controls = self.grid_view.controls
+                    controls.pop(card_ids.index(instruction['delete']))
+                    self.grid_view.controls = controls
+
         return super().on_pre_view()
 
     def generate_main_content(self):
@@ -88,6 +107,7 @@ class ClientCard(ft.Container):
     def __init__(self, page, data, **kwargs):
         super().__init__(**kwargs)
         self.page = page
+        self.id = data['id']
         self.data = data
         bgcolor = ft.colors.GREY_100
         self.alignment = ft.alignment.center

@@ -7,6 +7,7 @@ class FormPage(View):
     title_text = 'Title text'
     main_button_text = 'Button text'
     button_icon = ft.icons.MENU
+    icon_button_command = None
     def __init__(self, **kwargs):
         self.title = Title(
             self.title_text,
@@ -33,8 +34,21 @@ class FormPage(View):
             on_click=self.on_submit
         )
         self.buttons = [self.main_button]
-        self.icon_button_command = lambda e: e.page.show_drawer(self.drawer)
+        if self.icon_button_command is None:
+            self.icon_button_command = lambda e: e.page.show_drawer(self.drawer)
         super().__init__(**kwargs)
+
+    def get_data(self):
+        date = self.date_field.value
+        return {
+            'nome': self.name_field.value,
+            'data_nasc': date if isinstance(date, str) else f'{date:%d/%m/%Y}',
+            'tel': self.tel_field.value,
+            'email': self.email_field.value,
+            'endereco': self.address_field.value,
+            'cpf': self.cpf_field.value,
+            'rg': self.rg_field.value,
+        }
 
     def on_submit(self, e):
         pass

@@ -36,6 +36,10 @@ class Control:
         ]):
             return 'Email inválido!'
 
+        tel = data['tel']
+        if len(tel.replace(' ', '')) not in range(10, 14):
+            return 'Telefone inválido!'
+
         cpf = data['cpf']
         if not cpf.isdigit():
             return 'Digite apenas os dígitos do CPF!'
