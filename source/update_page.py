@@ -53,9 +53,7 @@ class UpdatePage(FormPage):
 
         client_id = e.page.data['id']
 
-        Cliente.update(**data).where(
-            Cliente.id==int(client_id)
-        ).execute()
+        Cliente.get(id=client_id).update(**data)
 
         data['id'] = client_id
 
