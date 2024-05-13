@@ -12,8 +12,8 @@ class View(ft.View):
             content=self.generate_main_content()
         )]
 
-    def generate_main_content(self):
-        return ft.Text('Generate main content')
-
     def on_pre_view(self):
         pass
+
+    def generate_main_content(self):
+        return ft.Text('Generate main content')

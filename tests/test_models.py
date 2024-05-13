@@ -25,9 +25,10 @@ def test_cliente_model():
         rg='1234567890'
     )
     cliente.save()
+    cliente_id = getattr(cliente, 'id')
     assert str(cliente) == 'John Doe'
     assert cliente.get_data() == {
-        'id': cliente.id,
+        'id': cliente_id,
         'nome': 'John Doe',
         'data_nasc': '1990-01-01',
         'tel': '1234567890',
@@ -37,4 +38,4 @@ def test_cliente_model():
         'rg': '1234567890'
     }
     cliente.delete_instance()
-    assert Cliente.get_or_none(id=cliente.id) is None
+    assert Cliente.get_or_none(id=cliente_id) is None
