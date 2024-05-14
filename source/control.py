@@ -6,7 +6,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Control:
-    # p4ssw0rd!
     login = os.environ.get('DEVSYSTEMS_L_DATA').encode('utf-8')
     pw = os.environ.get('DEVSYSTEMS_S_DATA').encode('utf-8')
     @classmethod
