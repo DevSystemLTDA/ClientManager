@@ -10,14 +10,26 @@ from .update_page import UpdatePage
 from .view import View
 
 def main(page: ft.Page):
+    page.window_center()
     page.title = "DevSystem"
-    page.padding = 1
+    page.padding = 0
+    page.spacing = 0
     page.fonts = {
         "Garet-Heavy": "fonts/Garet-Heavy.ttf",
         "Garet": "fonts/Garet-Book.ttf",
     }
     page.snack_bar = Message(page)
     page.drawer = NavigationDrawer()
+
+    def on_keyboard_event(e):
+        if e.key == 'F11':
+            page.window_full_screen = not page.window_full_screen
+            word = 'sair da' if page.window_full_screen else 'entrar na'
+            page.views[-1].text.value = f'Aperte F11 para {word} tela cheia'
+            page.update()
+
+    page.on_keyboard_event = on_keyboard_event
+
     View.page = page
 
     page.views.extend([

@@ -24,9 +24,9 @@ class ClientsPage(View):
                     card_index = card_ids.index(data['id'])
                     self.grid_view.controls[card_index] = ClientCard(self.page, data)
                 elif 'delete' in instruction:
-                    controls = self.grid_view.controls
-                    controls.pop(card_ids.index(instruction['delete']))
-                    self.grid_view.controls = controls
+                    self.grid_view.controls.pop(card_ids.index(instruction['delete']))
+
+        self.no_records_text.visible = not len(self.grid_view.controls)
 
         return super().on_pre_view()
 
@@ -65,6 +65,11 @@ class ClientsPage(View):
         ])
 
     def generate_clients(self):
+        self.no_records_text = ft.Text(
+            'Nenhum registro criado.\nPara cadastrar um cliente, use o\nmenu no canto superior esquerdo',
+            visible=False,
+            text_align=ft.TextAlign.CENTER
+        )
         self.grid_view = ft.GridView(
             controls=[ClientCard(self.page, c.get_data()) for c in Cliente.select()],
             child_aspect_ratio=.75,
@@ -87,8 +92,16 @@ class ClientsPage(View):
                         height=1200,
                         expand=True,
                         expand_loose=True,
-                        content=self.grid_view,
+                        content=ft.Stack(
+                            controls=[
+                                ft.Container(
+                                    content=self.no_records_text,
+                                    alignment=ft.alignment.center
+                                ),
+                                self.grid_view,
+                            ]
                         )
+                    )
                 ],
                 alignment=ft.MainAxisAlignment.CENTER
             )

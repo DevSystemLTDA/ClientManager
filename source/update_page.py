@@ -64,6 +64,7 @@ class UpdatePage(FormPage):
     
     def delete_client(self, e):
         client_id = e.page.data['id']
+
         Cliente.get(id=client_id).delete_instance()
 
         e.page.data = {'instruction': {'delete': client_id}}
