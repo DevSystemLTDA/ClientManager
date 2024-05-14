@@ -12,6 +12,14 @@ class UpdatePage(FormPage):
     icon_button_command = lambda _, e: e.page.go('/clients')
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.text_button = ft.TextButton(
+            "Sim", 
+            on_click=self.delete_client,
+            style=ft.ButtonStyle(
+                bgcolor=ft.colors.RED,
+                color=ft.colors.WHITE
+            )
+        )
         self.buttons.insert(0, CustomButton(
             'EXCLUIR',
             on_click=self.open_dialog,
@@ -22,14 +30,7 @@ class UpdatePage(FormPage):
             title=ft.Text("Confirmação de exclusão"),
             content=ft.Text("Você quer deletar esse cliente?"),
             actions=[
-                ft.TextButton(
-                    "Sim", 
-                    on_click=self.delete_client,
-                    style=ft.ButtonStyle(
-                        bgcolor=ft.colors.RED,
-                        color=ft.colors.WHITE
-                    )
-                ),
+                self.text_button,
                 ft.TextButton("Não", on_click=self.close_dialog),
             ],
             actions_alignment=ft.MainAxisAlignment.END,
@@ -37,6 +38,7 @@ class UpdatePage(FormPage):
 
     def on_pre_view(self):
         self.main_button.disabled = False
+        self.text_button.disabled = False
         d = self.page.data
         self.name_field.value = d.get('nome')
         self.date_field.value = d.get('data_nasc')
@@ -67,7 +69,7 @@ class UpdatePage(FormPage):
     
     def delete_client(self, e):
 
-        self.main_button.disabled = True
+        self.text_button.disabled = True
 
         client_id = e.page.data['id']
 

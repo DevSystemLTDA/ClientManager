@@ -8,7 +8,7 @@ from .view import View
 
 class ClientsPage(View):
     no_records_text = ft.Text(
-        'Nenhum registro criado.\nPara cadastrar um cliente, use o\nmenu no canto superior esquerdo',
+        'Nenhum registro criado.\nPara cadastrar um cliente, use o menu no canto\nsuperior esquerdo',
         visible=False,
         text_align=ft.TextAlign.CENTER
     )
@@ -132,7 +132,7 @@ class ClientCard(ft.Container):
         self.content = self.generate_content()
         def on_click(e):
             e.page.data = data
-            e.page.go('/pdate')
+            e.page.go('/update')
         self.on_click = on_click
 
     def generate_content(self):
