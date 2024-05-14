@@ -1,19 +1,22 @@
-from bcrypt import checkpw
+import os
 
-from .models import Data
+from bcrypt import checkpw
+from dotenv import load_dotenv
+
+load_dotenv()
 
 class Control:
-    print('Apagar dados expostos em Control')
+    # p4ssw0rd!
+    login = os.environ.get('DEVSYSTEMS_L_DATA').encode('utf-8')
+    pw = os.environ.get('DEVSYSTEMS_S_DATA').encode('utf-8')
     @classmethod
     def check_credentials(cls, login: str, password: str):
-        # devsystems
-        # minhasenha654
         return checkpw(
             login.encode('utf-8'),
-            Data.get_value('login').encode('utf-8')
+            cls.login
         ) and checkpw(
             password.encode('utf-8'),
-            Data.get_value('pw').encode('utf-8')
+            cls.pw
         )
 
     @classmethod

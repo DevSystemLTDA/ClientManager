@@ -84,6 +84,10 @@ class NavigationDrawer(ft.NavigationDrawer):
             ),
             ft.NavigationDrawerDestination(label="CLIENTES CADASTRADOS"),
             ft.NavigationDrawerDestination(label="CADASTRAR CLIENTE"),
+            ft.TextButton(
+                'SAIR',
+                on_click=self.logout
+            ),
             ft.Divider(),
             ft.TextButton(
                 '@dev.syst',
@@ -96,6 +100,10 @@ class NavigationDrawer(ft.NavigationDrawer):
     def change(self, e):
         e.page.close_drawer()
         e.page.go(self.routes[self.selected_index])
+
+    def logout(self, e):
+        e.page.client_storage.clear()
+        e.page.go('/login')
 
 class CustomButton(ft.Container):
     def __init__(self, text, on_click, **kwargs):

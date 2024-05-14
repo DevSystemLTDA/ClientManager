@@ -6,13 +6,6 @@ class BaseModel(Model):
     class Meta:
         database = db
 
-class Data(BaseModel):
-    key = CharField()
-    value = CharField()
-
-    @classmethod
-    def get_value(cls, key):
-        return cls.get(key=key).value
 
 # Create your models here.
 class Cliente(BaseModel):
@@ -32,4 +25,4 @@ class Cliente(BaseModel):
 
 db.connect()
 
-db.create_tables([Cliente, Data], safe=True)
+db.create_tables([Cliente], safe=True)
