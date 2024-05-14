@@ -102,6 +102,7 @@ class NavigationDrawer(ft.NavigationDrawer):
         e.page.go(self.routes[self.selected_index])
 
     def logout(self, e):
+        e.page.close_drawer()
         e.page.client_storage.clear()
         e.page.go('/login')
 

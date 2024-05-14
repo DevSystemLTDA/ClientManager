@@ -36,6 +36,7 @@ class UpdatePage(FormPage):
         )
 
     def on_pre_view(self):
+        self.main_button.disabled = False
         d = self.page.data
         self.name_field.value = d.get('nome')
         self.date_field.value = d.get('data_nasc')
@@ -51,6 +52,8 @@ class UpdatePage(FormPage):
         if error_message is not None:
             return e.page.snack_bar.message(error_message, 'error')
 
+        self.main_button.disabled = True
+
         client_id = e.page.data['id']
 
         Cliente.get(id=client_id).update(**data)
@@ -63,6 +66,9 @@ class UpdatePage(FormPage):
         return e.page.go('/clients')
     
     def delete_client(self, e):
+
+        self.main_button.disabled = True
+
         client_id = e.page.data['id']
 
         Cliente.get(id=client_id).delete_instance()

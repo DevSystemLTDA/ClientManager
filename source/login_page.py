@@ -12,6 +12,17 @@ class LoginTextField(CustomTextField):
         self.width = 450
 
 class LoginPage(View):
+    login_field = LoginTextField(label='Login')
+    password_field = LoginTextField(
+        label='Senha',
+        password=True,
+        can_reveal_password=True,
+    )
+
+    def on_pre_view(self):
+        self.login_field.value = ''
+        self.password_field.value = ''
+
     def generate_main_content(self):
         return ft.Column(
             horizontal_alignment=ft.alignment.center,
@@ -54,17 +65,10 @@ class LoginPage(View):
         )
 
     def generate_form_content(self):
-        login_field = LoginTextField(label='Login')
-        password_field = LoginTextField(
-            label='Senha',
-            password=True,
-            can_reveal_password=True,
-        )
-
         def login(_):
             if Control.check_credentials(
-                login_field.value,
-                password_field.value
+                self.login_field.value,
+                self.password_field.value
             ):
                 self.page.client_storage.set('logged', f"{datetime.datetime.today():%d/%m}")
                 self.page.snack_bar.message('Login realizado!', 'success')
@@ -83,8 +87,8 @@ class LoginPage(View):
                 horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                 alignment=ft.MainAxisAlignment.SPACE_EVENLY,
                 controls=[
-                    login_field,
-                    password_field,
+                    self.login_field,
+                    self.password_field,
                     CustomButton('ENTRAR', login)
                 ]
             )

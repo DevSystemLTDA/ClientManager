@@ -7,6 +7,12 @@ from .models import Cliente
 from .view import View
 
 class ClientsPage(View):
+    no_records_text = ft.Text(
+        'Nenhum registro criado.\nPara cadastrar um cliente, use o\nmenu no canto superior esquerdo',
+        visible=False,
+        text_align=ft.TextAlign.CENTER
+    )
+    grid_view = None
     def on_pre_view(self):
         if self.drawer.selected_index:
             self.drawer.selected_index = 0
@@ -26,7 +32,7 @@ class ClientsPage(View):
                 elif 'delete' in instruction:
                     self.grid_view.controls.pop(card_ids.index(instruction['delete']))
 
-        self.no_records_text.visible = not len(self.grid_view.controls)
+        self.no_records_text.visible = self.grid_view.controls == []
 
         return super().on_pre_view()
 
@@ -41,7 +47,7 @@ class ClientsPage(View):
                             icon_color=ft.colors.GREY_100,
                             icon_size=30,
                             padding=0,
-                            on_click=lambda _: self.page.show_drawer(self.drawer),
+                            on_click=lambda e: e.page.show_drawer(self.drawer),
                             left=0,
                             bottom=0,
                         ),
@@ -65,11 +71,6 @@ class ClientsPage(View):
         ])
 
     def generate_clients(self):
-        self.no_records_text = ft.Text(
-            'Nenhum registro criado.\nPara cadastrar um cliente, use o\nmenu no canto superior esquerdo',
-            visible=False,
-            text_align=ft.TextAlign.CENTER
-        )
         self.grid_view = ft.GridView(
             controls=[ClientCard(self.page, c.get_data()) for c in Cliente.select()],
             child_aspect_ratio=.75,
@@ -131,7 +132,7 @@ class ClientCard(ft.Container):
         self.content = self.generate_content()
         def on_click(e):
             e.page.data = data
-            e.page.go('/update')
+            e.page.go('/pdate')
         self.on_click = on_click
 
     def generate_content(self):

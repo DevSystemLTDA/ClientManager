@@ -35,6 +35,8 @@ class Control:
             '@' not in email,
             ' ' in email,
             '.' not in email.split('@')[-1],
+            len(email) < 14,
+            len(email) > 256,
         ]):
             return 'Email inválido!'
 

@@ -32,9 +32,11 @@ def test_validate_form_invalid_name(control_obj):
 
 def test_validate_form_invalid_email(control_obj):
     # Given
-    invalid_email_data_1 = CORRECT_DATA | {'email': 'noatsymbol.'}
-    invalid_email_data_2 = CORRECT_DATA |  {'email': 'no@domain'}
-    invalid_email_data_3 = CORRECT_DATA |  {'email': 'an@ empty.space'}
+    invalid_email_data_1 = CORRECT_DATA | {'email': 'noatsymbol.gmail.com'}
+    invalid_email_data_2 = CORRECT_DATA |  {'email': 'no@domaingmailcom'}
+    invalid_email_data_3 = CORRECT_DATA |  {'email': 'an@ empty.spacegmail.com'}
+    invalid_email_data_4 = CORRECT_DATA |  {'email': '@.'}
+    invalid_email_data_5 = CORRECT_DATA |  {'email': 'verybigemail@.' + '.' * 256}
 
     # When
     expected_result = 'Email inválido!'
@@ -43,6 +45,8 @@ def test_validate_form_invalid_email(control_obj):
     assert control_obj.validate_form(invalid_email_data_1) == expected_result
     assert control_obj.validate_form(invalid_email_data_2) == expected_result
     assert control_obj.validate_form(invalid_email_data_3) == expected_result
+    assert control_obj.validate_form(invalid_email_data_4) == expected_result
+    assert control_obj.validate_form(invalid_email_data_5) == expected_result
 
 
 def test_validate_form_invalid_tel(control_obj):

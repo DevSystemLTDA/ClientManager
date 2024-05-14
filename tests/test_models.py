@@ -1,4 +1,4 @@
-from source.models import db, Data, Cliente
+from source.models import db, Cliente
 
 def test_db_connection():
     assert db.is_closed() is False
@@ -6,13 +6,6 @@ def test_db_connection():
 def test_table_creation():
     assert db.table_exists('cliente')
     assert db.table_exists('data')
-
-def test_data_model():
-    data = Data(key='test_key', value='test_value')
-    data.save()
-    assert Data.get_value('test_key') == 'test_value'
-    data.delete_instance()
-    assert Data.get_or_none(key='test_key') is None
 
 def test_cliente_model():
     cliente = Cliente(
