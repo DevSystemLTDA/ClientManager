@@ -65,15 +65,15 @@ class LoginPage(View):
         )
 
     def generate_form_content(self):
-        def login(_):
+        def login(e):
             if Control.check_credentials(
                 self.login_field.value,
                 self.password_field.value
             ):
-                self.page.client_storage.set('logged', f"{datetime.datetime.today():%d/%m}")
-                self.page.snack_bar.message('Login realizado!', 'success')
-                return self.page.go('/clients')
-            return self.page.snack_bar.message('Login ou senha inválidos', 'error')
+                e.page.client_storage.set('logged', f"{datetime.datetime.today():%d/%m}")
+                e.page.snack_bar.message('Login realizado!', 'success')
+                return e.page.go('/clients')
+            return e.page.snack_bar.message('Login ou senha inválidos', 'error')
 
         return ft.Container(
             border=ft.border.all(3, ft.colors.GREY),

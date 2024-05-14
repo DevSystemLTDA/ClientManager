@@ -8,7 +8,9 @@ from .view import View
 
 class ClientsPage(View):
     no_records_text = ft.Text(
-        'Nenhum registro criado.\nPara cadastrar um cliente, use o menu no canto\nsuperior esquerdo',
+        """Nenhum registro criado.
+Para cadastrar um cliente, use o menu no
+canto superior esquerdo""",
         visible=False,
         text_align=ft.TextAlign.CENTER
     )
