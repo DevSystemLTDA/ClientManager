@@ -13,7 +13,10 @@ class FormPage(View):
             self.title_text,
             width=300
         )
-        self.name_field = CustomTextField(label='Nome')
+        self.name_field = CustomTextField(
+            label='Nome', 
+            autofocus=True
+        )
         self.date_field = DateField(self.page, width=200)
         self.tel_field = CustomTextField(
             label='Telefone',

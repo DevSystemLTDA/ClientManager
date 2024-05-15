@@ -24,8 +24,12 @@ def main(page: ft.Page):
     def on_keyboard_event(e):
         if e.key == 'F11':
             page.window_full_screen = not page.window_full_screen
-            word = 'sair da' if page.window_full_screen else 'entrar na'
-            page.views[-1].text.value = f'Aperte F11 para {word} tela cheia'
+            page.update()
+        elif e.key == 'F1':
+            if e.page.drawer.open:
+                e.page.close_drawer()
+            else:
+                e.page.show_drawer(e.page.drawer)
             page.update()
 
     page.on_keyboard_event = on_keyboard_event
