@@ -6,19 +6,24 @@ class RegisterPage(FormPage):
     title_text = 'CADASTRO DO CLIENTE'
     main_button_text = 'CADASTRAR'
     def on_submit(self, e):
-        data = self.get_data()
-        error_message = Control.validate_form(data)
-        if error_message is not None:
-            return e.page.snack_bar.message(error_message, 'error')
+        try:
+            data = self.get_data()
+            error_message = Control.validate_form(data)
+            if error_message is not None:
+                return e.page.snack_bar.message(error_message, 'error')
 
-        self.main_button.disabled = True
+            self.main_button.disabled = True
 
-        data['id'] = Cliente.create(**data)
+            data['id'] = Cliente.create(**data)
 
-        e.page.data = {'instruction': {'create': data}}
+            e.page.data = {'instruction': {'create': data}}
 
-        e.page.snack_bar.message('Cliente criado com sucesso!', 'success')
-        return e.page.go('/clients')
+            e.page.snack_bar.message('Cliente criado com sucesso!', 'success')
+            return e.page.go('/clients')
+        except Exception as exception:
+            Control.log(exception)
+            e.page.snack_bar.message('Erro no processo!', 'error')
+            return e.page.go('/clients')
 
     def on_pre_view(self):
         self.main_button.disabled = False

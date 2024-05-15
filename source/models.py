@@ -1,6 +1,15 @@
+import os
+
 from peewee import SqliteDatabase, Model, CharField, TextField, DateField
 
-db = SqliteDatabase('database.db')
+path = os.path.join(os.environ.get('LOCALAPPDATA'), 'DevSystems')
+
+if not os.path.exists(path):
+    os.mkdir(path)
+
+db = SqliteDatabase(
+    os.path.join(path, 'database.db')
+)
 
 class BaseModel(Model):
     class Meta:

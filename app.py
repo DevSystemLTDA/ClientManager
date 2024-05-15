@@ -1,6 +1,9 @@
 import flet as ft
 
-from source import main
+from source import main, Control
 
 if __name__ == '__main__':
-    ft.app(main, assets_dir="assets")
+    try:
+        ft.app(main, assets_dir="assets")
+    except Exception as e:
+        Control.log(e)

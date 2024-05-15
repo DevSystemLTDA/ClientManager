@@ -6,6 +6,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Control:
+    log_file_path = os.path.join(
+        os.environ.get('LOCALAPPDATA'),
+        'log.log'
+    )
     login = os.environ.get('DEVSYSTEMS_L_DATA').encode('utf-8')
     pw = os.environ.get('DEVSYSTEMS_S_DATA').encode('utf-8')
     @classmethod
@@ -57,3 +61,8 @@ class Control:
             return 'RG inválido!'
 
         return None
+
+    @classmethod
+    def log(cls, e):
+        with open(cls.log_file_path, 'w', encoding='utf-8') as f:
+            f.write(str(e))

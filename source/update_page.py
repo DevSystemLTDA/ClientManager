@@ -12,6 +12,7 @@ class UpdatePage(FormPage):
     icon_button_command = lambda _, e: e.page.go('/clients')
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.client_id = None
         self.text_button = ft.TextButton(
             "Sim", 
             on_click=self.delete_client,
@@ -40,6 +41,7 @@ class UpdatePage(FormPage):
         self.main_button.disabled = False
         self.text_button.disabled = False
         d = self.page.data
+        self.client_id = d['id']
         self.name_field.value = d.get('nome')
         self.date_field.value = d.get('data_nasc')
         self.tel_field.value = d.get('tel')
@@ -49,38 +51,43 @@ class UpdatePage(FormPage):
         self.rg_field.value = d.get('rg')
 
     def on_submit(self, e):
-        data = self.get_data()
-        error_message = Control.validate_form(data)
-        if error_message is not None:
-            return e.page.snack_bar.message(error_message, 'error')
+        try:
+            data = self.get_data()
+            error_message = Control.validate_form(data)
+            if error_message is not None:
+                return e.page.snack_bar.message(error_message, 'error')
 
-        self.main_button.disabled = True
+            self.main_button.disabled = True
 
-        client_id = e.page.data['id']
+            Cliente.get(id=self.client_id).update(**data)
 
-        Cliente.get(id=client_id).update(**data)
+            data['id'] = self.client_id
 
-        data['id'] = client_id
+            e.page.data = {'instruction': {'update': data}}
 
-        e.page.data = {'instruction': {'update': data}}
+            e.page.snack_bar.message('Cliente atualizado com sucesso!', 'success')
+            return e.page.go('/clients')
+        except Exception as exception:
+            Control.log(exception)
+            e.page.snack_bar.message('Erro no processo!', 'error')
+            return e.page.go('/clients')
 
-        e.page.snack_bar.message('Cliente atualizado com sucesso!', 'success')
-        return e.page.go('/clients')
-    
     def delete_client(self, e):
+        try:
+            self.text_button.disabled = True
 
-        self.text_button.disabled = True
+            Cliente.get(id=self.client_id).delete_instance()
 
-        client_id = e.page.data['id']
+            e.page.data = {'instruction': {'delete': self.client_id}}
 
-        Cliente.get(id=client_id).delete_instance()
+            self.close_dialog(e)
 
-        e.page.data = {'instruction': {'delete': client_id}}
-
-        self.close_dialog(e)
-
-        e.page.snack_bar.message('Cliente excluído com sucesso!', 'success')
-        return e.page.go('/clients')
+            e.page.snack_bar.message('Cliente excluído com sucesso!', 'success')
+            return e.page.go('/clients')
+        except Exception as exception:
+            Control.log(exception)
+            e.page.snack_bar.message('Erro no processo!', 'error')
+            return e.page.go('/clients')
 
     def close_dialog(self, e):
         e.page.dialog.open = False
