@@ -4,5 +4,7 @@ dist
 build
 .vscode
 DevSystems.spec
-venv
-.env
+**/venv
+**.env
+**.ico
+**.bat
